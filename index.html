@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>수업 참관록</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <style>
@@ -349,41 +349,49 @@ const S   = {mode:'visitor',qrMode:'all',filt:'all',curId:null};
 function lsSave(){try{localStorage.setItem('obs_v6',JSON.stringify({info:DB.info,adminPw:DB.adminPw}));}catch(e){}}
 function lsLoad(){try{const r=localStorage.getItem('obs_v6');if(r){const d=JSON.parse(r);if(d.info)DB.info=d.info;if(d.adminPw)DB.adminPw=d.adminPw;}}catch(e){}}
 
-// ── API 호출 (JSONP - CORS 우회) ──
-function jsonp(url){
-  return new Promise((resolve, reject)=>{
-    const cb = 'cb_'+Date.now();
-    const s = document.createElement('script');
-    s.src = url + '&callback=' + cb;
-    window[cb] = (data)=>{ resolve(data); delete window[cb]; s.remove(); };
-    s.onerror = ()=>{ reject(new Error('JSONP 실패')); s.remove(); };
-    document.head.appendChild(s);
-    setTimeout(()=>{ if(window[cb]){ reject(new Error('타임아웃')); delete window[cb]; s.remove(); }},10000);
-  });
-}
+// ── API 호출 (fetch redirect follow) ──
 async function apiGet(action, params={}){
   let url = API+'?action='+action;
-  Object.entries(params).forEach(([k,v])=>{ url+='&'+k+'='+encodeURIComponent(v); });
-  return jsonp(url);
+  Object.entries(params).forEach(([k,v])=>{ url+='&'+encodeURIComponent(k)+'='+encodeURIComponent(v||''); });
+  const r = await fetch(url, {redirect:'follow'});
+  return r.json();
 }
 async function apiPost(body){
-  // POST도 GET으로 처리 (JSONP)
   const action = body.action;
   delete body.action;
   let url = API+'?action='+action;
-  Object.entries(body).forEach(([k,v])=>{ url+='&'+k+'='+encodeURIComponent(v||''); });
-  return jsonp(url);
+  Object.entries(body).forEach(([k,v])=>{ url+='&'+encodeURIComponent(k)+'='+encodeURIComponent(v||''); });
+  const r = await fetch(url, {redirect:'follow'});
+  return r.json();
 }
 
 // ── 지도안 로드 (앱 시작시 자동) ──
 async function loadLessons(){
   try{
-    const res = await apiGet('getLessons');
-    if(res.lessons) DB.lessons = res.lessons;
+    const url='https://docs.google.com/spreadsheets/d/1BddfnByUrluBEVIhh72uFqS0Xpjb0dPH8B1yRpftO4I/export?format=csv&gid=1456007179&t='+Date.now();
+    const r=await fetch(url);
+    if(!r.ok) throw new Error('Sheets 접근 실패');
+    const buf=await r.arrayBuffer();
+    const text=new TextDecoder('utf-8').decode(buf);
+    const rows=csvParse(text);
+    DB.lessons=rows.filter(r=>r['교사명']).map(r=>({
+      id:r['ID']||String(Date.now()),
+      teacher:r['교사명']||'',
+      grade:r['학년']||'',
+      cls:r['반']||'',
+      subject:r['교과']||'',
+      unit:r['단원']||'',
+      time:r['수업시간']||'',
+      room:r['장소']||'',
+      driveUrl:r['Drive링크']||''
+    }));
     rLessons();rHome();rAdminLes();
-    document.getElementById('st-l').textContent = DB.lessons.length;
-    document.getElementById('st-t').textContent = [...new Set(DB.lessons.map(l=>l.teacher))].length;
-  }catch(e){console.log('지도안 없음 또는 로드 실패',e);document.getElementById('lesson-list').innerHTML='<div style="text-align:center;padding:26px;color:var(--tx3);font-size:12px">등록된 지도안 없음<br><span style="font-size:10px">관리자 로그인 후 지도안을 등록하세요</span></div>';}
+    document.getElementById('st-l').textContent=DB.lessons.length;
+    document.getElementById('st-t').textContent=[...new Set(DB.lessons.map(l=>l.teacher))].length;
+    if(DB.lessons.length>0) toast('지도안 '+DB.lessons.length+'개 로드');
+  }catch(e){
+    console.log('지도안 로드 실패',e);
+  }
 }
 
 // ── 참관록 로드 ──
@@ -462,13 +470,13 @@ function rHome(){
   const el=document.getElementById('home-sched');
   if(!DB.lessons.length){el.innerHTML='<div style="text-align:center;padding:16px;color:var(--tx3);font-size:11px">등록된 수업 없음</div>';return;}
   el.innerHTML=[...DB.lessons].sort((a,b)=>(a.time||'').localeCompare(b.time||'')).map(l=>`
-    <div style="display:flex;align-items:center;gap:9px;padding:9px;background:var(--vt);border-radius:9px;margin-bottom:6px">
-      <div style="font-size:11px;font-weight:700;color:var(--vt3);min-width:37px">${l.time||''}</div>
-      <div style="flex:1">
-        <div style="font-size:11px;font-weight:700">${l.grade} ${l.cls} <span style="background:var(--pk);padding:1px 7px;border-radius:20px;font-size:10px">${l.subject}</span></div>
-        <div style="font-size:10px;color:var(--tx2)">${l.teacher} · ${l.room||'교실'}</div>
+    <div style="display:flex;flex-direction:row;align-items:center;gap:9px;padding:9px;background:var(--vt);border-radius:9px;margin-bottom:6px;min-width:0;overflow:hidden">
+      <div style="font-size:11px;font-weight:700;color:var(--vt3);min-width:40px;flex-shrink:0">${l.time||'--:--'}</div>
+      <div style="flex:1;min-width:0;overflow:hidden">
+        <div style="font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${l.grade} ${l.cls} <span style="background:var(--pk);padding:1px 6px;border-radius:20px;font-size:10px">${l.subject}</span></div>
+        <div style="font-size:10px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${l.teacher} · ${l.room||'교실'}</div>
       </div>
-      ${l.driveUrl?`<a href="${l.driveUrl}" target="_blank" style="font-size:10px;color:var(--vt3);text-decoration:none;background:var(--wh);padding:3px 7px;border-radius:5px;border:1px solid var(--bd)">📄</a>`:''}
+      ${l.driveUrl?`<a href="${l.driveUrl}" target="_blank" style="font-size:10px;color:var(--vt3);text-decoration:none;background:var(--wh);padding:3px 7px;border-radius:5px;border:1px solid var(--bd);flex-shrink:0">📄</a>`:''}
     </div>`).join('');
 }
 function rLessons(){
@@ -525,7 +533,12 @@ function fillAdmin(){
 }
 
 // ── 지도안 등록/삭제 ──
-async function addLesson(){
+function addLesson(){
+  window.open('https://docs.google.com/spreadsheets/d/1BddfnByUrluBEVIhh72uFqS0Xpjb0dPH8B1yRpftO4I/edit','_blank');
+  cm('ov-lesson');
+  toast('Sheets에 입력 후 앱 새로고침 하세요');
+}
+async function addLesson_api(){
   const t=(document.getElementById('lf-t').value||'').trim();
   const g=document.getElementById('lf-g').value;
   const c=document.getElementById('lf-c').value;
@@ -566,13 +579,10 @@ async function addLesson(){
   }
 }
 async function rmLesson(id){
-  if(!confirm('삭제?'))return;
-  try{
-    const res=await apiPost({action:'deleteLesson',id});
-    if(res.ok){loadLessons();toast('🗑️ 삭제됨');}
-    else toast('❌ 삭제 실패');
-  }catch(e){toast('❌ 오류');}
+  toast('Sheets에서 직접 삭제 후 새로고침 하세요');
+  window.open('https://docs.google.com/spreadsheets/d/1BddfnByUrluBEVIhh72uFqS0Xpjb0dPH8B1yRpftO4I/edit','_blank');
 }
+
 
 // ── 설정 저장 ──
 async function saveInfo(){
