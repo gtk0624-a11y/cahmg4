@@ -449,13 +449,17 @@ async function loadSheets(){
     const tRows=csvParse(dec.decode(bufT));
     const tObs=tRows.map((r,i)=>{
       // 헤더: Timestamp,과목명,단원명,수업 교사,대상(반),참관 일시,교시,좋았던 점,내 수업에 활용하고 싶은 점,종합 의견,소속,직위,성명
-      // 칸 수 불일치 문제: 소속/직위 비어있으면 성명이 밀림 → 마지막 비어있지 않은 값 사용
+      // 칸 수 불일치 문제: 소속/직위 비어있으면 성명이 밀림
       const vals = Object.values(r);
-      const keys = Object.keys(r);
-      // 성명: 헤더로 먼저 찾고, 없으면 마지막 비어있지 않은 값
-      const nameByHeader = r['성명']||'';
-      const nameByLast = vals.filter(v=>v.trim()).pop()||'';
-      const name = nameByHeader || nameByLast;
+      // 성명: 헤더로 먼저 찾기
+      let name = r['성명']||'';
+      // 헤더로 못찾으면 → 칸 수 확인해서 마지막 칸 사용
+      if(!name) {
+        // 헤더 13개 기준, 칸이 12개면 마지막이 성명(소속직위 생략)
+        if(vals.length === 12) name = vals[11]||'';
+        else if(vals.length >= 13) name = vals[12]||'';
+      }
+      name = name.trim();
       return{
         id:'t'+i, obsType:'peer',
         at:      r['Timestamp']||'',
