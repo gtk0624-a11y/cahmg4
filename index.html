@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>수업 참관록</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <style>
@@ -23,7 +23,6 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
 .hdr{background:linear-gradient(135deg,#E090B8,#9878D8,#78A8E0);padding:16px 16px 12px;flex-shrink:0;position:relative;overflow:hidden}
 .hdr:before{content:'';position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.08);top:-55px;right:-45px}
 .hdr-row{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1}
-.hdr-l{flex:1}
 .hdr-title{font-size:16px;font-weight:800;color:#fff}
 .hdr-school{font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px}
 .hdr-date{font-size:10px;color:rgba(255,255,255,0.65);margin-top:1px}
@@ -58,7 +57,7 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
 .sl_{font-size:10px;color:var(--tx2);margin-top:2px}
 .notice{background:linear-gradient(135deg,var(--pk),var(--vt));border-radius:13px;padding:14px;border:1px dashed var(--pk2);margin-bottom:12px}
 .qrw{display:flex;flex-direction:column;align-items:center;padding:8px}
-.qrf{width:190px;height:190px;background:#fff;border-radius:16px;border:3px solid var(--vt3);display:flex;align-items:center;justify-content:center;padding:8px;box-shadow:0 8px 30px rgba(88,48,168,0.20)}
+.qrf{width:200px;height:200px;background:#fff;border-radius:16px;border:3px solid var(--vt3);display:flex;align-items:center;justify-content:center;padding:8px;box-shadow:0 8px 30px rgba(88,48,168,0.20)}
 .qru{font-size:10px;color:var(--tx2);margin-top:9px;word-break:break-all;text-align:center;background:var(--vt);padding:8px 12px;border-radius:9px;width:100%}
 .pg{display:none}.pg.on{display:block}
 .ov{position:fixed;inset:0;background:rgba(32,12,60,0.52);z-index:500;display:none;align-items:center;justify-content:center;padding:16px}
@@ -71,21 +70,17 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
 .ldg{position:fixed;inset:0;background:linear-gradient(135deg,#E090B8,#9878D8,#78A8E0);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9000;transition:opacity .4s}
 .ldg.hide{opacity:0;pointer-events:none}
 .sp{width:30px;height:30px;border:3px solid rgba(255,255,255,0.28);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin-top:14px}
+.sp2{width:16px;height:16px;border:2px solid rgba(88,48,168,0.3);border-top-color:var(--vt3);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 .tc{border:2.5px solid var(--bd);border-radius:16px;padding:20px 12px;text-align:center;background:var(--wh);transition:all .22s;box-shadow:var(--sh);text-decoration:none;display:block}
 .tc:hover{border-color:var(--vt3);background:var(--vt);transform:translateY(-3px)}
-
-/* ── 인쇄 스타일 ── */
 #prt{display:none}
 @media print{
   body>*{display:none!important}
-  #prt{
-    display:block!important;
-    font-family:'Noto Sans KR',sans-serif;
-    font-size:11pt;color:#000;
-  }
+  #prt{display:block!important;font-family:'Noto Sans KR',sans-serif;font-size:11pt;color:#000}
   .pp{page-break-after:always}
   .pp:last-child{page-break-after:avoid}
+  canvas{display:block!important}
   @page{size:A4;margin:15mm}
 }
 .pp{padding:8px 0}
@@ -94,24 +89,21 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
 .pt{width:100%;border-collapse:collapse;margin-bottom:8px;font-size:10.5pt}
 .pt td,.pt th{border:1px solid #888;padding:5px 7px;vertical-align:top}
 .pl{background:#EDE0FF;font-weight:700;width:22%}
-.pyw{font-size:9pt;background:#FFF0C0;padding:5px 9px;margin-bottom:6px;line-height:1.9}
+.pyw{font-size:9pt;background:#FFF0C0;padding:5px 8px;margin-bottom:6px;line-height:1.9}
 .psign{text-align:right;margin-top:10px;font-size:10pt}
 </style>
 </head>
 <body>
-
 <div id="prt"></div>
-
 <div class="ldg" id="ldg">
   <div style="font-size:21px;font-weight:800;color:#fff">🌸 수업 참관록</div>
   <div style="font-size:11px;color:rgba(255,255,255,0.8);margin-top:4px">불러오는 중...</div>
   <div class="sp"></div>
 </div>
-
 <div class="wrap">
   <div class="hdr">
     <div class="hdr-row">
-      <div class="hdr-l">
+      <div>
         <div class="hdr-title" id="hdr-title">🌸 수업 참관록</div>
         <div class="hdr-school" id="hdr-school">학교명 미설정</div>
         <div class="hdr-date" id="hdr-date"></div>
@@ -132,7 +124,7 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
     <button class="nb" id="nb-admin" style="display:none" onclick="go('admin',this)"><i class="ti ti-shield"></i>관리</button>
     <button class="nb" onclick="go('qr',this)"><i class="ti ti-qrcode"></i>QR</button>
   </nav>
-  <div class="body" id="bd">
+  <div class="body">
 
     <!-- 홈 -->
     <div class="pg on" id="pg-home">
@@ -163,7 +155,7 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
     <!-- 참관록 -->
     <div class="pg" id="pg-observe">
       <div style="font-size:15px;font-weight:800;text-align:center;margin-bottom:6px">참관록 작성</div>
-      <div style="font-size:11px;color:var(--tx2);text-align:center;margin-bottom:18px">유형을 선택하면 바로 작성 화면이 열립니다</div>
+      <div style="font-size:11px;color:var(--tx2);text-align:center;margin-bottom:18px">유형을 선택하세요</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
         <a class="tc" href="https://docs.google.com/forms/d/e/1FAIpQLSfj4qctzWdLAuTj0ilR3Le85eHO_9GuslVuUE9mUPT4mY7UUQ/viewform" target="_blank">
           <div style="font-size:36px;margin-bottom:10px">👨‍👩‍👧</div>
@@ -177,16 +169,15 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
         </a>
       </div>
       <div style="background:linear-gradient(135deg,#C4ECD8,#EDE0FF);border-radius:13px;padding:13px;font-size:11px;color:var(--tx2);line-height:2">
-        ✅ <b style="color:var(--vt3)">제출하면 자동으로 관리자에게 저장됩니다</b><br>
-        Google Forms 제출 → Sheets 실시간 저장 → 관리자 PDF 출력
+        ✅ <b style="color:var(--vt3)">제출하면 자동으로 관리자에게 저장됩니다</b>
       </div>
     </div>
 
-    <!-- 관리자 -->
+    <!-- 관리 -->
     <div class="pg" id="pg-admin">
       <div style="font-size:15px;font-weight:800;margin-bottom:13px">🔐 관리자 메뉴</div>
       <div class="card">
-        <div class="card-hd"><i class="ti ti-edit"></i>헤더 정보 편집</div>
+        <div class="card-hd"><i class="ti ti-edit"></i>학교 정보</div>
         <div class="fg"><label class="lb">행사 제목</label><input class="ip" id="ed-title" placeholder="2026학년도 공개수업의 날"></div>
         <div class="fg"><label class="lb">학교명</label><input class="ip" id="ed-school" placeholder="○○중학교"></div>
         <div class="fg"><label class="lb">날짜</label><input class="ip" id="ed-date" placeholder="2026년 5월 29일(금)"></div>
@@ -194,39 +185,31 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
         <div class="fg"><label class="lb">추가 안내</label><textarea class="ip" id="ed-msg" rows="2" style="resize:vertical;min-height:50px;line-height:1.6"></textarea></div>
         <button class="btn bp bw" onclick="saveInfo()"><i class="ti ti-device-floppy"></i> 저장</button>
       </div>
-
       <div class="card">
-        <div class="card-hd"><i class="ti ti-cloud-download"></i>참관록 불러오기 &amp; 인쇄·PDF</div>
+        <div class="card-hd"><i class="ti ti-cloud-download"></i>참관록 불러오기 &amp; PDF</div>
         <div style="font-size:11px;color:var(--vt3);background:var(--vt);padding:9px;border-radius:8px;margin-bottom:10px;line-height:1.8">
-          💡 Sheets에서 참관록을 불러온 뒤<br>인쇄(PDF) 버튼을 누르면 결재용 문서가 출력됩니다.
+          💡 Sheets에서 참관록을 불러온 뒤 PDF 출력하세요
         </div>
         <button class="btn bp bw" id="btn-load" onclick="loadSheets()" style="margin-bottom:8px">
-          <i class="ti ti-refresh"></i> Sheets에서 참관록 불러오기
+          <i class="ti ti-refresh"></i> 참관록 불러오기
         </button>
         <div id="load-status" style="font-size:11px;text-align:center;margin-bottom:10px;min-height:18px"></div>
         <div style="display:flex;gap:5px;margin-bottom:10px">
           <button class="btn bsm bs" id="fa" style="flex:1;border-color:var(--vt3)" onclick="setFilt('all')">전체</button>
-          <button class="btn bsm" id="fp" style="flex:1;background:var(--pk);color:var(--pk3);border:1.5px solid var(--bd)" onclick="setFilt('parent')">👨‍👩‍👧 학부모</button>
-          <button class="btn bsm" id="ft" style="flex:1;background:var(--yw);color:var(--yw3);border:1.5px solid var(--bd)" onclick="setFilt('peer')">👩‍🏫 동료장학</button>
+          <button class="btn bsm" id="fp" style="flex:1;background:var(--pk);color:var(--pk3);border:1.5px solid var(--bd)" onclick="setFilt('parent')">학부모</button>
+          <button class="btn bsm" id="ft" style="flex:1;background:var(--yw);color:var(--yw3);border:1.5px solid var(--bd)" onclick="setFilt('peer')">동료장학</button>
         </div>
         <div id="obs-list" style="margin-bottom:11px"><div style="text-align:center;padding:12px;color:var(--tx3);font-size:11px">불러오기 버튼을 눌러주세요</div></div>
         <div class="g2">
-          <button class="btn bg_ bsm" onclick="prtAll()"><i class="ti ti-printer"></i> 전체 인쇄·PDF</button>
-          <button class="btn bs bsm" onclick="prtByTeacher()"><i class="ti ti-user-check"></i> 교사별 인쇄·PDF</button>
+          <button class="btn bg_ bsm" onclick="prtAll()"><i class="ti ti-printer"></i> 전체 PDF</button>
+          <button class="btn bs bsm" onclick="prtByTeacher()"><i class="ti ti-user-check"></i> 교사별 PDF</button>
         </div>
       </div>
-
       <div class="card">
-        <div class="card-hd"><i class="ti ti-table"></i>Sheets 직접 확인</div>
-        <a href="https://docs.google.com/spreadsheets/d/1X8Vrnmmy6S53q91rJ9jt5P5JKEUk4JCweX2N8xoE1OU/edit" target="_blank" class="btn bs bw"><i class="ti ti-external-link"></i> Google Sheets 열기</a>
-      </div>
-
-      <div class="card">
-        <div class="card-hd"><i class="ti ti-book-2"></i>지도안 등록·관리</div>
+        <div class="card-hd"><i class="ti ti-book-2"></i>지도안 관리</div>
         <button class="btn bs bw" style="margin-bottom:9px" onclick="om('ov-lesson')"><i class="ti ti-plus"></i> 지도안 등록</button>
         <div id="admin-les"></div>
       </div>
-
       <div class="card">
         <div class="card-hd"><i class="ti ti-lock"></i>비밀번호 변경</div>
         <div class="g2" style="margin-bottom:8px">
@@ -240,11 +223,6 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
     <!-- QR -->
     <div class="pg" id="pg-qr">
       <div style="font-size:15px;font-weight:800;margin-bottom:12px">📱 QR 코드</div>
-      <div style="background:linear-gradient(135deg,#F0E8FF,#FFE8F4);border-radius:12px;padding:13px;border:1px solid var(--pk2);margin-bottom:13px;font-size:11px;color:var(--tx2);line-height:2">
-        <b style="color:var(--vt3)">📌 QR 사용법</b><br>
-        ① 유형 선택 후 QR 재생성<br>② QR을 카카오톡·인쇄로 공유<br>
-        ③ 폰으로 스캔 → 바로 참관록 작성 ✅<br>④ 제출 → Sheets 자동저장 → 관리자 PDF 출력
-      </div>
       <div style="display:flex;gap:6px;margin-bottom:12px">
         <button class="btn bsm" id="qt-all" style="flex:1;background:var(--vt);color:var(--vt3);border:1.5px solid var(--vt3)" onclick="swQR('all')">전체</button>
         <button class="btn bsm" id="qt-parent" style="flex:1;background:var(--wh);color:var(--tx2);border:1.5px solid var(--bd)" onclick="swQR('parent')">👨‍👩‍👧 학부모</button>
@@ -253,13 +231,14 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
       <div class="card">
         <div class="card-hd"><i class="ti ti-qrcode"></i>QR 코드</div>
         <div class="qrw"><div class="qrf" id="qr-box"></div><div class="qru" id="qr-url">생성 중...</div></div>
-        <div class="g2" style="margin-top:11px">
+        <div style="font-size:10px;color:var(--tx3);text-align:center;margin:6px 0">앱 주소만 담아 QR이 깔끔합니다 ✅</div>
+        <div class="g2" style="margin-top:8px">
           <button class="btn bs" onclick="makeQR()"><i class="ti ti-refresh"></i> 재생성</button>
           <button class="btn bp" onclick="shareURL()"><i class="ti ti-share"></i> 공유</button>
         </div>
       </div>
       <div class="card">
-        <div class="card-hd"><i class="ti ti-news"></i>안내문</div>
+        <div class="card-hd"><i class="ti ti-news"></i>안내문 인쇄</div>
         <div class="notice">
           <div style="font-size:14px;font-weight:800;color:var(--pk3);text-align:center;margin-bottom:6px" id="qr-ttl">공개수업 안내</div>
           <div style="font-size:11px;color:var(--tx2);line-height:2.1;text-align:center" id="qr-body">-</div>
@@ -319,9 +298,10 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
       <label class="lb">Google Drive 링크 (선택)</label>
       <input class="ip" id="lf-drive" placeholder="https://drive.google.com/file/d/...">
     </div>
+    <div id="add-status" style="font-size:11px;text-align:center;margin-bottom:8px;min-height:16px"></div>
     <div class="g2">
       <button class="btn bs" onclick="cm('ov-lesson')">취소</button>
-      <button class="btn bp" onclick="addLesson()"><i class="ti ti-check"></i> 저장</button>
+      <button class="btn bp" id="btn-save-lesson" onclick="addLesson()"><i class="ti ti-check"></i> 저장</button>
     </div>
   </div>
 </div>
@@ -341,16 +321,15 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--bg)
 <div class="toast" id="toast"></div>
 
 <script>
-// ══ 설정 ══
-const PARENT_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfj4qctzWdLAuTj0ilR3Le85eHO_9GuslVuUE9mUPT4mY7UUQ/viewform';
-const PEER_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf35LS8GQup_WN4yLw1uYGJWgDR3GOBK_3zoj-N98LfQ3I91A/viewform';
-const APP_URL    = location.href.split('?')[0];
-const SID_P = '1iehS9w9HMEWVDNzNx4_OeI7s44r1GAl4u0zsZUJ1AmQ';
-const SID_T = '1X8Vrnmmy6S53q91rJ9jt5P5JKEUk4JCweX2N8xoE1OU';
-const GID_P = '1958649509';
-const GID_T = '384448222';
+const API = 'https://script.google.com/macros/s/AKfycbyO-GYTsbqNzGaGz3V03SmDDedF6vUI3Mbipegr6CTLrlQzUwGW0yixWZ-zkhQEGB33mg/exec';
+const PARENT_URL= 'https://docs.google.com/forms/d/e/1FAIpQLSfj4qctzWdLAuTj0ilR3Le85eHO_9GuslVuUE9mUPT4mY7UUQ/viewform';
+const PEER_URL  = 'https://docs.google.com/forms/d/e/1FAIpQLSf35LS8GQup_WN4yLw1uYGJWgDR3GOBK_3zoj-N98LfQ3I91A/viewform';
+const APP_URL   = location.href.split('?')[0];
+const SID_P     = '1iehS9w9HMEWVDNzNx4_OeI7s44r1GAl4u0zsZUJ1AmQ';
+const GID_P     = '1958649509';
+const SID_T     = '1X8Vrnmmy6S53q91rJ9jt5P5JKEUk4JCweX2N8xoE1OU';
+const GID_T     = '384448222';
 
-// 학부모 체크리스트 10개
 const CKQ = [
   '내 자녀는 선생님의 말씀에 귀 기울여 듣습니까?',
   '내 자녀는 교사와 눈 맞춤을 하며 주의 집중을 잘하고 있습니까?',
@@ -367,18 +346,94 @@ const CKQ = [
 const DB  = {info:{title:'수업 참관록',school:'',date:'',place:'',msg:''},adminPw:'1234',lessons:[],obs:[]};
 const S   = {mode:'visitor',qrMode:'all',filt:'all',curId:null};
 
-// ══ localStorage ══
-function lsSave(){try{localStorage.setItem('obs_v5',JSON.stringify({info:DB.info,adminPw:DB.adminPw,lessons:DB.lessons}));}catch(e){}}
-function lsLoad(){
-  try{
-    const r=localStorage.getItem('obs_v5');
-    if(r){const d=JSON.parse(r);if(d.info)DB.info=d.info;if(d.adminPw)DB.adminPw=d.adminPw;if(d.lessons)DB.lessons=d.lessons;}
-  }catch(e){}
+function lsSave(){try{localStorage.setItem('obs_v6',JSON.stringify({info:DB.info,adminPw:DB.adminPw}));}catch(e){}}
+function lsLoad(){try{const r=localStorage.getItem('obs_v6');if(r){const d=JSON.parse(r);if(d.info)DB.info=d.info;if(d.adminPw)DB.adminPw=d.adminPw;}}catch(e){}}
+
+// ── API 호출 (fetch redirect follow) ──
+async function apiGet(action, params={}){
+  let url = API+'?action='+action;
+  Object.entries(params).forEach(([k,v])=>{ url+='&'+encodeURIComponent(k)+'='+encodeURIComponent(v||''); });
+  const r = await fetch(url, {redirect:'follow'});
+  return r.json();
+}
+async function apiPost(body){
+  const action = body.action;
+  delete body.action;
+  let url = API+'?action='+action;
+  Object.entries(body).forEach(([k,v])=>{ url+='&'+encodeURIComponent(k)+'='+encodeURIComponent(v||''); });
+  const r = await fetch(url, {redirect:'follow'});
+  return r.json();
 }
 
-// ══ CSV 파싱 ══
+// ── 지도안 로드 (앱 시작시 자동) ──
+async function loadLessons(){
+  try{
+    const url='https://docs.google.com/spreadsheets/d/1BddfnByUrluBEVIhh72uFqS0Xpjb0dPH8B1yRpftO4I/export?format=csv&gid=1456007179&t='+Date.now();
+    const r=await fetch(url);
+    if(!r.ok) throw new Error('Sheets 접근 실패');
+    const buf=await r.arrayBuffer();
+    const text=new TextDecoder('utf-8').decode(buf);
+    const rows=csvParse(text);
+    DB.lessons=rows.filter(r=>r['교사명']).map(r=>({
+      id:r['ID']||String(Date.now()),
+      teacher:r['교사명']||'',
+      grade:r['학년']||'',
+      cls:r['반']||'',
+      subject:r['교과']||'',
+      unit:r['단원']||'',
+      time:r['수업시간']||'',
+      room:r['장소']||'',
+      driveUrl:r['Drive링크']||''
+    }));
+    rLessons();rHome();rAdminLes();
+    document.getElementById('st-l').textContent=DB.lessons.length;
+    document.getElementById('st-t').textContent=[...new Set(DB.lessons.map(l=>l.teacher))].length;
+    if(DB.lessons.length>0) toast('지도안 '+DB.lessons.length+'개 로드');
+  }catch(e){
+    console.log('지도안 로드 실패',e);
+  }
+}
+
+// ── 참관록 로드 ──
+async function loadSheets(){
+  const btn=document.getElementById('btn-load');
+  const st=document.getElementById('load-status');
+  btn.disabled=true;
+  btn.innerHTML='<i class="ti ti-loader-2"></i> 불러오는 중...';
+  st.style.color='var(--tx3)';
+  st.textContent='연결 중...';
+  try{
+    const mkUrl=(sid,gid)=>`https://docs.google.com/spreadsheets/d/${sid}/export?format=csv&gid=${gid}&t=${Date.now()}`;
+    const [bP,bT]=await Promise.all([
+      fetch(mkUrl(SID_P,GID_P)).then(r=>{if(!r.ok)throw new Error('학부모 오류');return r.arrayBuffer();}),
+      fetch(mkUrl(SID_T,GID_T)).then(r=>{if(!r.ok)throw new Error('동료장학 오류');return r.arrayBuffer();})
+    ]);
+    const dec=new TextDecoder('utf-8');
+    const pObs=csvParse(dec.decode(bP)).map((r,i)=>{
+      const v=Object.values(r);
+      return{id:'p'+i,obsType:'parent',at:v[0]||'',lesson:v[1]||'',date:v[2]||'',period:v[3]||'',name:v[4]||'',grade:v[5]||'',cls:v[6]||'',ck:v.slice(7,17),comment:v[17]||''};
+    });
+    const tObs=csvParse(dec.decode(bT)).map((r,i)=>{
+      const v=Object.values(r);
+      return{id:'t'+i,obsType:'peer',at:v[0]||'',subject:v[1]||'',unit:v[2]||'',teacher:v[3]||'',class_:v[4]||'',date:v[5]||'',period:v[6]||'',good:v[7]||'',apply:v[8]||'',opinion:v[9]||'',org:v[10]||'',pos:v[11]||'',name:v[12]||''};
+    });
+    DB.obs=[...pObs,...tObs];
+    document.getElementById('st-o').textContent=DB.obs.length;
+    st.style.color='var(--mint3)';
+    st.textContent=`✅ 총 ${DB.obs.length}건 (학부모 ${pObs.length} · 동료장학 ${tObs.length})`;
+    renderObs();toast(`✅ ${DB.obs.length}건 불러옴`);
+  }catch(e){
+    st.style.color='var(--pk3)';
+    st.textContent='❌ '+e.message;
+    toast('❌ 불러오기 실패');
+  }finally{
+    btn.disabled=false;
+    btn.innerHTML='<i class="ti ti-refresh"></i> 참관록 불러오기';
+  }
+}
+
 function csvParse(raw){
-  raw=raw.replace(/^\uFEFF/,'');
+  raw=raw.replace(/^﻿/,'');
   const lines=raw.split(/\r?\n/).filter(l=>l.trim());
   if(lines.length<2)return[];
   const headers=csvLine(lines[0]);
@@ -396,106 +451,10 @@ function csvLine(line){
     else if(line[i]===','&&!q){res.push(cur);cur='';}
     else{cur+=line[i];}
   }
-  res.push(cur);
-  return res;
+  res.push(cur);return res;
 }
 
-// ══ Sheets 불러오기 ══
-async function loadSheets(){
-  const btn=document.getElementById('btn-load');
-  const st=document.getElementById('load-status');
-  btn.disabled=true;
-  btn.innerHTML='<i class="ti ti-loader-2"></i> 불러오는 중...';
-  st.style.color='var(--tx3)';
-  st.textContent='Google Sheets에 연결 중...';
-
-  try{
-    const mkUrlP=`https://docs.google.com/spreadsheets/d/${SID_P}/export?format=csv&gid=${GID_P}&t=${Date.now()}`;
-    const mkUrlT=`https://docs.google.com/spreadsheets/d/${SID_T}/export?format=csv&gid=${GID_T}&t=${Date.now()}`;
-    const [bufP,bufT]=await Promise.all([
-      fetch(mkUrlP).then(r=>{if(!r.ok)throw new Error('학부모 시트 오류 '+r.status);return r.arrayBuffer();}),
-      fetch(mkUrlT).then(r=>{if(!r.ok)throw new Error('동료장학 시트 오류 '+r.status);return r.arrayBuffer();})
-    ]);
-    const dec=new TextDecoder('utf-8');
-
-    // ── 학부모 매핑 ──
-    // 컬럼: 0=Timestamp 1=참관수업선택 2=참관일시 3=교시 4=학부모성명 5=자녀학년 6=자녀반
-    // 7~16=체크리스트10개 17=참관소감
-    const pRows=csvParse(dec.decode(bufP));
-    const pObs=pRows.map((r,i)=>{
-      const keys = Object.keys(r);
-      // 체크리스트 항목들 (7번째부터 16번째)
-      const allVals = Object.values(r);
-      // 헤더명으로 읽기
-      const ckKeys = keys.filter(k=>k.match(/[1-9]|10\.|내 자녀|교사와|교사의|학습에|발표|바른|기본|친구가|학습 활동|친구의/));
-      const ck = ckKeys.length>0 ? ckKeys.map(k=>r[k]||'') : allVals.slice(7,17);
-      return{
-        id:'p'+i, obsType:'parent',
-        at:     r['Timestamp']||allVals[0]||'',
-        lesson: r['참관 수업 선택']||r['참관수업선택']||r['수업선택']||allVals[1]||'',
-        date:   r['참관 일시']||r['참관일시']||r['날짜']||allVals[2]||'',
-        period: r['교시']||allVals[3]||'',
-        name:   r['학부모 성명']||r['학부모성명']||r['성명']||allVals[4]||'',
-        grade:  r['자녀 학년']||r['학년']||allVals[5]||'',
-        cls:    r['자녀 반']||r['반']||allVals[6]||'',
-        ck,
-        comment:r['참관 소감']||r['참관소감']||r['소감']||allVals[allVals.length-1]||''
-      };
-    });
-
-    // ── 동료장학 매핑 ──
-    // 컬럼: 0=Timestamp 1=과목명 2=단원명 3=수업교사 4=대상(반) 5=참관일시 6=교시
-    // 7=좋았던점 8=내수업에활용 9=종합의견 10=소속 11=직위 12=성명
-    const tRows=csvParse(dec.decode(bufT));
-    const tObs=tRows.map((r,i)=>{
-      // 헤더: Timestamp,과목명,단원명,수업 교사,대상(반),참관 일시,교시,좋았던 점,내 수업에 활용하고 싶은 점,종합 의견,소속,직위,성명
-      // 칸 수 불일치 문제: 소속/직위 비어있으면 성명이 밀림
-      const vals = Object.values(r);
-      // 성명: 헤더로 먼저 찾기
-      let name = r['성명']||'';
-      // 헤더로 못찾으면 → 칸 수 확인해서 마지막 칸 사용
-      if(!name) {
-        // 헤더 13개 기준, 칸이 12개면 마지막이 성명(소속직위 생략)
-        if(vals.length === 12) name = vals[11]||'';
-        else if(vals.length >= 13) name = vals[12]||'';
-      }
-      name = name.trim();
-      return{
-        id:'t'+i, obsType:'peer',
-        at:      r['Timestamp']||'',
-        subject: r['과목명']||'',
-        unit:    r['단원명']||'',
-        teacher: r['수업 교사']||'',
-        class_:  r['대상(반)']||'',
-        date:    r['참관 일시']||'',
-        period:  r['교시']||'',
-        good:    r['좋았던 점']||'',
-        apply:   r['내 수업에 활용하고 싶은 점']||'',
-        opinion: r['종합 의견']||'',
-        org:     r['소속']||'',
-        pos:     r['직위']||'',
-        name
-      };
-    });
-
-    DB.obs=[...pObs,...tObs];
-    document.getElementById('st-o').textContent=DB.obs.length;
-    st.style.color='var(--mint3)';
-    st.textContent=`✅ 총 ${DB.obs.length}건 (학부모 ${pObs.length}건 · 동료장학 ${tObs.length}건)`;
-    renderObs();
-    toast(`✅ ${DB.obs.length}건 불러옴`);
-  }catch(e){
-    st.style.color='var(--pk3)';
-    st.textContent='❌ '+e.message;
-    toast('❌ 불러오기 실패');
-    console.error(e);
-  }finally{
-    btn.disabled=false;
-    btn.innerHTML='<i class="ti ti-refresh"></i> Sheets에서 참관록 불러오기';
-  }
-}
-
-// ══ 렌더링 ══
+// ── 렌더링 ──
 function renderAll(){rHdr();rHome();rLessons();rAdminLes();rQR();fillAdmin();}
 
 function rHdr(){
@@ -508,18 +467,16 @@ function rHdr(){
 function rHome(){
   const i=DB.info;
   document.getElementById('home-txt').innerHTML=`📌 행사명: ${i.title||'미설정'}<br>📌 학교명: ${i.school||'미설정'}<br>📌 일 시: ${i.date||'미설정'}<br>📌 장 소: ${i.place||'미설정'}${i.msg?'<br>📌 안내: '+i.msg:''}`;
-  document.getElementById('st-l').textContent=DB.lessons.length;
-  document.getElementById('st-t').textContent=[...new Set(DB.lessons.map(l=>l.teacher))].length;
   const el=document.getElementById('home-sched');
   if(!DB.lessons.length){el.innerHTML='<div style="text-align:center;padding:16px;color:var(--tx3);font-size:11px">등록된 수업 없음</div>';return;}
   el.innerHTML=[...DB.lessons].sort((a,b)=>(a.time||'').localeCompare(b.time||'')).map(l=>`
-    <div style="display:flex;align-items:center;gap:9px;padding:9px;background:var(--vt);border-radius:9px;margin-bottom:6px">
-      <div style="font-size:11px;font-weight:700;color:var(--vt3);min-width:37px">${l.time||''}</div>
-      <div style="flex:1">
-        <div style="font-size:11px;font-weight:700">${l.grade} ${l.cls} <span style="background:var(--pk);padding:1px 7px;border-radius:20px;font-size:10px">${l.subject}</span></div>
-        <div style="font-size:10px;color:var(--tx2)">${l.teacher} · ${l.room||'교실'}</div>
+    <div style="display:flex;flex-direction:row;align-items:center;gap:9px;padding:9px;background:var(--vt);border-radius:9px;margin-bottom:6px;min-width:0;overflow:hidden">
+      <div style="font-size:11px;font-weight:700;color:var(--vt3);min-width:40px;flex-shrink:0">${l.time||'--:--'}</div>
+      <div style="flex:1;min-width:0;overflow:hidden">
+        <div style="font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${l.grade} ${l.cls} <span style="background:var(--pk);padding:1px 6px;border-radius:20px;font-size:10px">${l.subject}</span></div>
+        <div style="font-size:10px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${l.teacher} · ${l.room||'교실'}</div>
       </div>
-      ${l.driveUrl?`<a href="${l.driveUrl}" target="_blank" style="font-size:10px;color:var(--vt3);text-decoration:none;background:var(--wh);padding:3px 7px;border-radius:5px;border:1px solid var(--bd)">📄</a>`:''}
+      ${l.driveUrl?`<a href="${l.driveUrl}" target="_blank" style="font-size:10px;color:var(--vt3);text-decoration:none;background:var(--wh);padding:3px 7px;border-radius:5px;border:1px solid var(--bd);flex-shrink:0">📄</a>`:''}
     </div>`).join('');
 }
 function rLessons(){
@@ -556,7 +513,6 @@ function renderObs(){
         <div>
           <div style="font-size:12px;font-weight:700">${o.name||'(이름없음)'}</div>
           <div style="font-size:10px;color:var(--tx2)">${o.obsType==='parent'?(o.grade+' '+o.cls):(o.org||'')} · ${o.date||'-'}</div>
-          <div style="font-size:10px;color:var(--vt3)">${o.obsType==='peer'?o.subject+' ('+o.teacher+')':(o.lesson||'')}</div>
           <span style="display:inline-flex;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;margin-top:3px;background:${o.obsType==='peer'?'var(--yw)':'var(--pk)'};color:${o.obsType==='peer'?'var(--yw3)':'var(--pk3)'}">${o.obsType==='peer'?'👩‍🏫 동료장학':'👨‍👩‍👧 학부모'}</span>
         </div>
         <div style="display:flex;gap:5px">
@@ -576,48 +532,110 @@ function fillAdmin(){
   ['title','school','date','place','msg'].forEach(k=>{const e=document.getElementById('ed-'+k);if(e)e.value=i[k]||'';});
 }
 
-// ══ 참관록 상세 보기 ══
+// ── 지도안 등록/삭제 ──
+function addLesson(){
+  window.open('https://docs.google.com/spreadsheets/d/1BddfnByUrluBEVIhh72uFqS0Xpjb0dPH8B1yRpftO4I/edit','_blank');
+  cm('ov-lesson');
+  toast('Sheets에 입력 후 앱 새로고침 하세요');
+}
+async function addLesson_api(){
+  const t=(document.getElementById('lf-t').value||'').trim();
+  const g=document.getElementById('lf-g').value;
+  const c=document.getElementById('lf-c').value;
+  const sub=document.getElementById('lf-s').value;
+  const u=(document.getElementById('lf-u').value||'').trim();
+  if(!t||!g||!c||!sub||!u){toast('❗필수 항목 입력');return;}
+  
+  const btn=document.getElementById('btn-save-lesson');
+  const st=document.getElementById('add-status');
+  btn.disabled=true;
+  btn.innerHTML='<i class="ti ti-loader-2"></i> 저장 중...';
+  st.textContent='Sheets에 저장 중...';st.style.color='var(--tx3)';
+  
+  try{
+    const res=await apiPost({
+      action:'addLesson',
+      teacher:t,grade:g,cls:c,subject:sub,unit:u,
+      time:document.getElementById('lf-tm').value,
+      room:document.getElementById('lf-r').value,
+      driveUrl:(document.getElementById('lf-drive').value||'').trim()
+    });
+    if(res.ok){
+      st.textContent='✅ 저장됨!';st.style.color='var(--mint3)';
+      setTimeout(()=>{
+        cm('ov-lesson');
+        ['lf-t','lf-u','lf-drive'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+        loadLessons();
+        toast('✅ 지도안 등록 완료!');
+      },800);
+    }else{
+      st.textContent='❌ 저장 실패: '+(res.error||'');st.style.color='var(--pk3)';
+    }
+  }catch(e){
+    st.textContent='❌ 오류: '+e.message;st.style.color='var(--pk3)';
+  }finally{
+    btn.disabled=false;
+    btn.innerHTML='<i class="ti ti-check"></i> 저장';
+  }
+}
+async function rmLesson(id){
+  toast('Sheets에서 직접 삭제 후 새로고침 하세요');
+  window.open('https://docs.google.com/spreadsheets/d/1BddfnByUrluBEVIhh72uFqS0Xpjb0dPH8B1yRpftO4I/edit','_blank');
+}
+
+
+// ── 설정 저장 ──
+async function saveInfo(){
+  DB.info={
+    title:(document.getElementById('ed-title').value||'').trim(),
+    school:(document.getElementById('ed-school').value||'').trim(),
+    date:(document.getElementById('ed-date').value||'').trim(),
+    place:(document.getElementById('ed-place').value||'').trim(),
+    msg:(document.getElementById('ed-msg').value||'').trim()
+  };
+  lsSave();rHdr();rHome();rQR();
+  try{await apiPost({action:'saveInfo',info:DB.info});}catch(e){}
+  toast('✅ 저장됨');
+}
+
+// ── 참관록 상세 ──
 function viewObs(id){
-  const o=DB.obs.find(x=>x.id===id);
-  if(!o)return;
+  const o=DB.obs.find(x=>x.id===id);if(!o)return;
   S.curId=id;
   let html='';
   if(o.obsType==='parent'){
-    const ck1=CKQ.slice(0,7).map((q,i)=>`<tr><td style="border:1px solid #ccc;padding:4px;text-align:center;font-size:10px;width:18px">${i+1}</td><td style="border:1px solid #ccc;padding:4px;font-size:10px">${q}</td><td style="border:1px solid #ccc;padding:4px;font-size:10px;color:var(--vt3);font-weight:700">${o.ck?o.ck[i]||'':''}</td></tr>`).join('');
-    const ck2=CKQ.slice(7).map((q,i)=>`<tr><td style="border:1px solid #ccc;padding:4px;text-align:center;font-size:10px">${i+8}</td><td style="border:1px solid #ccc;padding:4px;font-size:10px">${q}</td><td style="border:1px solid #ccc;padding:4px;font-size:10px;color:var(--vt3);font-weight:700">${o.ck?o.ck[i+7]||'':''}</td></tr>`).join('');
-    html=`
-      <table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px">
-        <tr><th colspan="4" style="padding:7px;text-align:center;font-size:13px;font-weight:700;color:var(--vt3);background:var(--vt)">학부모 수업 참관록</th></tr>
-        <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);width:25%">학부모명</td><td style="border:1px solid #ccc;padding:5px 7px" colspan="3">${o.name}</td></tr>
-        <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">자녀학년·반</td><td style="border:1px solid #ccc;padding:5px 7px" colspan="3">${o.grade} ${o.cls}</td></tr>
-        <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">참관수업</td><td style="border:1px solid #ccc;padding:5px 7px" colspan="3">${o.lesson}</td></tr>
-        <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">일시</td><td style="border:1px solid #ccc;padding:5px 7px" colspan="3">${o.date} ${o.period}</td></tr>
-      </table>
-      <table style="width:100%;border-collapse:collapse;font-size:10px;margin-bottom:8px">
-        <tr><th style="border:1px solid #ccc;padding:5px;background:var(--vt);width:18px">No</th><th style="border:1px solid #ccc;padding:5px;background:var(--vt);text-align:left">자녀의 학습 준비도 및 학습 활동</th><th style="border:1px solid #ccc;padding:5px;background:var(--vt)">응답</th></tr>
-        ${ck1}
-        <tr><th style="border:1px solid #ccc;padding:5px;background:var(--vt)"></th><th style="border:1px solid #ccc;padding:5px;background:var(--vt);text-align:left">자녀의 사회 적응도</th><th style="border:1px solid #ccc;padding:5px;background:var(--vt)"></th></tr>
-        ${ck2}
-      </table>
-      ${o.comment?`<div style="background:var(--vt);border-radius:9px;padding:10px;font-size:11px;line-height:1.8"><b style="color:var(--vt3)">참관 소감</b><br>${o.comment}</div>`:''}`;
+    const ck1=CKQ.slice(0,7).map((q,i)=>`<tr><td style="border:1px solid #ccc;padding:4px;text-align:center;font-size:10px;width:18px">${i+1}</td><td style="border:1px solid #ccc;padding:4px;font-size:10px">${q}</td><td style="border:1px solid #ccc;padding:4px;font-size:10px;font-weight:700;color:var(--vt3)">${o.ck?o.ck[i]||'':''}</td></tr>`).join('');
+    const ck2=CKQ.slice(7).map((q,i)=>`<tr><td style="border:1px solid #ccc;padding:4px;text-align:center;font-size:10px">${i+8}</td><td style="border:1px solid #ccc;padding:4px;font-size:10px">${q}</td><td style="border:1px solid #ccc;padding:4px;font-size:10px;font-weight:700;color:var(--vt3)">${o.ck?o.ck[i+7]||'':''}</td></tr>`).join('');
+    html=`<table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px">
+      <tr><th colspan="4" style="padding:7px;text-align:center;font-size:13px;font-weight:700;color:var(--vt3);background:var(--vt)">학부모 수업 참관록</th></tr>
+      <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);width:25%">학부모명</td><td style="border:1px solid #ccc;padding:5px 7px" colspan="3">${o.name}</td></tr>
+      <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">자녀학년·반</td><td style="border:1px solid #ccc;padding:5px 7px" colspan="3">${o.grade} ${o.cls}</td></tr>
+      <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">참관일시</td><td style="border:1px solid #ccc;padding:5px 7px" colspan="3">${o.date} ${o.period}</td></tr>
+    </table>
+    <table style="width:100%;border-collapse:collapse;font-size:10px;margin-bottom:8px">
+      <tr><th style="border:1px solid #ccc;padding:5px;background:var(--vt);width:18px">No</th><th style="border:1px solid #ccc;padding:5px;background:var(--vt);text-align:left">학습 준비도 및 학습 활동</th><th style="border:1px solid #ccc;padding:5px;background:var(--vt)">응답</th></tr>
+      ${ck1}
+      <tr><th style="border:1px solid #ccc;padding:5px;background:var(--vt)"></th><th style="border:1px solid #ccc;padding:5px;background:var(--vt);text-align:left">사회 적응도</th><th style="border:1px solid #ccc;padding:5px;background:var(--vt)"></th></tr>
+      ${ck2}
+    </table>
+    ${o.comment?`<div style="background:var(--vt);border-radius:9px;padding:10px;font-size:11px;line-height:1.8"><b style="color:var(--vt3)">참관 소감</b><br>${o.comment}</div>`:''}`;
   }else{
-    html=`
-      <table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px">
-        <tr><th colspan="4" style="padding:7px;text-align:center;font-size:13px;font-weight:700;color:var(--vt3);background:var(--vt)">수 업 참 관 록</th></tr>
-        <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);width:22%">과목명</td><td style="border:1px solid #ccc;padding:5px 7px">${o.subject}</td><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);width:22%">단원명</td><td style="border:1px solid #ccc;padding:5px 7px">${o.unit}</td></tr>
-        <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">수업교사</td><td style="border:1px solid #ccc;padding:5px 7px">${o.teacher}</td><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">대상(반)</td><td style="border:1px solid #ccc;padding:5px 7px">${o.class_}</td></tr>
-        <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">일시</td><td style="border:1px solid #ccc;padding:5px 7px" colspan="3">${o.date} ${o.period}</td></tr>
-        <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);vertical-align:top">좋았던 점</td><td style="border:1px solid #ccc;padding:5px 7px;line-height:1.8" colspan="3">${o.good||'-'}</td></tr>
-        <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);vertical-align:top">활용하고<br>싶은 점</td><td style="border:1px solid #ccc;padding:5px 7px;line-height:1.8" colspan="3">${o.apply||'-'}</td></tr>
-        <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);vertical-align:top">종합의견</td><td style="border:1px solid #ccc;padding:5px 7px;line-height:1.8" colspan="3">${o.opinion||'-'}</td></tr>
-      </table>
-      <div style="font-size:11px;padding:4px 0">참관자: 소속(${o.org||'   '}) 직위(${o.pos||'   '}) 성명(${o.name})</div>`;
+    html=`<table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px">
+      <tr><th colspan="4" style="padding:7px;text-align:center;font-size:13px;font-weight:700;color:var(--vt3);background:var(--vt)">수 업 참 관 록</th></tr>
+      <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);width:22%">과목명</td><td style="border:1px solid #ccc;padding:5px 7px">${o.subject}</td><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);width:22%">단원명</td><td style="border:1px solid #ccc;padding:5px 7px">${o.unit}</td></tr>
+      <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">수업교사</td><td style="border:1px solid #ccc;padding:5px 7px">${o.teacher}</td><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">대상(반)</td><td style="border:1px solid #ccc;padding:5px 7px">${o.class_}</td></tr>
+      <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt)">일시</td><td style="border:1px solid #ccc;padding:5px 7px" colspan="3">${o.date} ${o.period}</td></tr>
+      <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);vertical-align:top">좋았던 점</td><td style="border:1px solid #ccc;padding:5px 7px;line-height:1.8" colspan="3">${o.good||'-'}</td></tr>
+      <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);vertical-align:top">활용하고싶은 점</td><td style="border:1px solid #ccc;padding:5px 7px;line-height:1.8" colspan="3">${o.apply||'-'}</td></tr>
+      <tr><td style="border:1px solid #ccc;padding:5px 7px;font-weight:700;background:var(--vt);vertical-align:top">종합의견</td><td style="border:1px solid #ccc;padding:5px 7px;line-height:1.8" colspan="3">${o.opinion||'-'}</td></tr>
+    </table>
+    <div style="font-size:11px;padding:4px 0">참관자: 소속(${o.org||'   '}) 직위(${o.pos||'   '}) 성명(${o.name})</div>`;
   }
   document.getElementById('obs-det').innerHTML=html;
   om('ov-obs');
 }
 
-// ══ 인쇄·PDF (브라우저 인쇄 → PDF 저장) ══
+// ── 인쇄·PDF ──
 function buildPage(o){
   const inf=DB.info;
   if(o.obsType==='peer'){
@@ -632,9 +650,7 @@ function buildPage(o){
         <tr><td class="pl" style="vertical-align:top;padding-top:8px">내 수업에<br>활용하고<br>싶은 점</td><td colspan="3" style="min-height:80px;line-height:2">${(o.apply||'').split('\n').join('<br>')}</td></tr>
         <tr><td class="pl" style="vertical-align:top;padding-top:8px">종합 의견</td><td colspan="3" style="min-height:80px;line-height:2">${(o.opinion||'').split('\n').join('<br>')}</td></tr>
       </table>
-      <div style="margin-top:14px;font-size:10.5pt">
-        참관자 : 소속 (&nbsp;${o.org||'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}&nbsp;) &nbsp; 직위 (&nbsp;${o.pos||'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}&nbsp;) &nbsp; 성명 (&nbsp;${o.name||''}&nbsp;)
-      </div>
+      <div style="margin-top:14px;font-size:10.5pt">참관자 : 소속(&nbsp;${o.org||'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}&nbsp;)&nbsp;&nbsp;직위(&nbsp;${o.pos||'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}&nbsp;)&nbsp;&nbsp;성명(&nbsp;${o.name||''}&nbsp;)</div>
       <div class="psign">서 명 : _____________________________ (인)</div>
     </div>`;
   }else{
@@ -647,7 +663,7 @@ function buildPage(o){
         <tr><td class="pl">학부모 성명</td><td>${o.name||''}</td><td class="pl" style="width:22%">자녀 학년·반</td><td>${o.grade||''} ${o.cls||''}</td></tr>
         <tr><td class="pl">참 관 수 업</td><td>${o.lesson||''}</td><td class="pl">참 관 일 시</td><td>${o.date||''} ${o.period||''}</td></tr>
       </table>
-      <div class="pyw">📋 해당되는 번호에 표시해 주십시오 &nbsp;|&nbsp; ④매우그렇다 &nbsp; ③보통이다 &nbsp; ②그렇지않다 &nbsp; ①전혀그렇지않다</div>
+      <div class="pyw">📋 해당되는 번호에 표시해 주십시오 | ④매우그렇다 ③보통이다 ②그렇지않다 ①전혀그렇지않다</div>
       <table class="pt">
         <tr><th style="border:1px solid #888;background:#EDE0FF;padding:5px;width:5%">No</th><th style="border:1px solid #888;background:#EDE0FF;padding:5px;text-align:left">자녀의 학습 준비도 및 학습 활동</th><th style="border:1px solid #888;background:#EDE0FF;padding:5px;width:32%">응 답</th></tr>
         ${r1}
@@ -661,27 +677,15 @@ function buildPage(o){
     </div>`;
   }
 }
-
 function doPrint(list){
   if(!list||!list.length){toast('인쇄할 참관록이 없습니다');return;}
-  document.getElementById('prt').innerHTML=list.map(buildPage).join('');
-  setTimeout(()=>{
-    window.print();
-    setTimeout(()=>{document.getElementById('prt').innerHTML='';},1500);
-  },200);
-  toast('🖨️ 인쇄 창 열림 → 대상: PDF로 저장 선택');
+  const prt=document.getElementById('prt');
+  prt.innerHTML=list.map(buildPage).join('');
+  setTimeout(()=>{window.print();setTimeout(()=>{prt.innerHTML='';},1500);},200);
+  toast('🖨️ 인쇄 창 → PDF로 저장 선택');
 }
-
-function prtOne(){
-  const o=DB.obs.find(x=>x.id===S.curId);
-  if(!o){toast('참관록 없음');return;}
-  cm('ov-obs');
-  setTimeout(()=>doPrint([o]),300);
-}
-function prtSingle(id){
-  const o=DB.obs.find(x=>x.id===id);
-  if(o)doPrint([o]);
-}
+function prtOne(){const o=DB.obs.find(x=>x.id===S.curId);if(!o)return;cm('ov-obs');setTimeout(()=>doPrint([o]),300);}
+function prtSingle(id){const o=DB.obs.find(x=>x.id===id);if(o)doPrint([o]);}
 function prtAll(){
   const list=S.filt==='all'?DB.obs:DB.obs.filter(o=>o.obsType===S.filt);
   if(!list.length){toast('먼저 불러오기를 눌러주세요');return;}
@@ -689,35 +693,22 @@ function prtAll(){
 }
 function prtByTeacher(){
   if(!DB.obs.length){toast('먼저 불러오기를 눌러주세요');return;}
-  // 교사별로 정렬해서 출력
-  const sorted=[...DB.obs].sort((a,b)=>{
-    const ta=a.obsType==='peer'?a.teacher:(a.lesson||'');
-    const tb=b.obsType==='peer'?b.teacher:(b.lesson||'');
-    return ta.localeCompare(tb,'ko');
-  });
-  doPrint(sorted);
+  doPrint([...DB.obs].sort((a,b)=>{const ta=a.obsType==='peer'?a.teacher:(a.lesson||'');const tb=b.obsType==='peer'?b.teacher:(b.lesson||'');return ta.localeCompare(tb,'ko');}));
 }
 function prtNotice(){
-  // QR 캔버스를 이미지로 변환
-  const qrCanvas = document.querySelector('#qr-box canvas');
-  const qrImg = qrCanvas ? `<img src="${qrCanvas.toDataURL()}" style="width:180px;height:180px;margin:20px auto;display:block">` : '';
-  
   const i=DB.info;
+  const qrCanvas=document.querySelector('#qr-box canvas');
+  const qrImg=qrCanvas?`<img src="${qrCanvas.toDataURL()}" style="width:180px;height:180px;margin:20px auto;display:block">`:'';
   document.getElementById('prt').innerHTML=`<div class="pp" style="text-align:center;padding:30px 20px">
     <div style="font-size:22pt;font-weight:800;color:#5830A8;margin-bottom:16px">${i.title||'공개수업 안내'}</div>
-    <div style="font-size:13pt;line-height:2.5;color:#200C3C">
-      🏫 ${i.school||''}<br>
-      📅 ${i.date||''}<br>
-      📍 ${i.place||''}<br>
-      ${i.msg?'📌 '+i.msg:''}
-    </div>
-    <div style="margin-top:20px;font-size:12pt;color:#604880">아래 QR코드를 스캔하시면 참관록을 작성하실 수 있습니다.</div>
+    <div style="font-size:13pt;line-height:2.5;color:#200C3C">🏫 ${i.school||''}<br>📅 ${i.date||''}<br>📍 ${i.place||''}<br>${i.msg?'📌 '+i.msg:''}</div>
+    <div style="margin-top:20px;font-size:11pt;color:#604880">아래 QR코드를 스캔하시면 참관록을 작성하실 수 있습니다.</div>
     ${qrImg}
   </div>`;
   setTimeout(()=>{window.print();setTimeout(()=>{document.getElementById('prt').innerHTML='';},1500);},200);
 }
 
-// ══ 기타 함수들 ══
+// ── 기타 ──
 function go(p,btn){
   document.querySelectorAll('.pg').forEach(e=>e.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
@@ -727,9 +718,8 @@ function go(p,btn){
   if(p==='qr')makeQR();
 }
 function checkPw(){
-  if(document.getElementById('pw-inp').value===DB.adminPw){
-    setMode('admin');cm('ov-pw');document.getElementById('pw-inp').value='';toast('🔐 관리자 로그인');
-  }else toast('❌ 비밀번호 오류');
+  if(document.getElementById('pw-inp').value===DB.adminPw){setMode('admin');cm('ov-pw');document.getElementById('pw-inp').value='';toast('🔐 관리자 로그인');}
+  else toast('❌ 비밀번호 오류');
 }
 function setMode(m){
   S.mode=m;const a=m==='admin';
@@ -744,110 +734,28 @@ function changePw(){
   if(!p1||p1!==p2){toast(p1?'❗불일치':'❗입력');return;}
   DB.adminPw=p1;lsSave();document.getElementById('pw1').value='';document.getElementById('pw2').value='';toast('✅ 변경됨');
 }
-function saveInfo(){
-  DB.info={
-    title:(document.getElementById('ed-title').value||'').trim(),
-    school:(document.getElementById('ed-school').value||'').trim(),
-    date:(document.getElementById('ed-date').value||'').trim(),
-    place:(document.getElementById('ed-place').value||'').trim(),
-    msg:(document.getElementById('ed-msg').value||'').trim()
-  };
-  lsSave();rHdr();rHome();rQR();toast('✅ 저장됨');
-}
-function addLesson(){
-  const t=(document.getElementById('lf-t').value||'').trim();
-  const g=document.getElementById('lf-g').value;
-  const c=document.getElementById('lf-c').value;
-  const sub=document.getElementById('lf-s').value;
-  const u=(document.getElementById('lf-u').value||'').trim();
-  if(!t||!g||!c||!sub||!u){toast('❗필수 항목 입력');return;}
-  DB.lessons.push({
-    id:Date.now()+'',teacher:t,grade:g,cls:c,subject:sub,unit:u,
-    time:document.getElementById('lf-tm').value,
-    room:document.getElementById('lf-r').value,
-    driveUrl:(document.getElementById('lf-drive').value||'').trim()
-  });
-  lsSave();cm('ov-lesson');
-  ['lf-t','lf-u','lf-drive'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  renderAll();toast('✅ 지도안 등록');
-}
-function rmLesson(id){
-  if(!confirm('삭제?'))return;
-  DB.lessons=DB.lessons.filter(l=>l.id!==id);lsSave();renderAll();toast('🗑️ 삭제됨');
-}
 function setFilt(f){
   S.filt=f;
-  ['all','parent','peer'].forEach(k=>{
-    const b=document.getElementById('f'+k[0]);
-    if(!b)return;
-    b.style.fontWeight=k===f?'700':'500';
-    b.style.borderColor=k===f?'var(--vt3)':'var(--bd)';
-  });
+  ['all','parent','peer'].forEach(k=>{const b=document.getElementById('f'+k[0]);if(!b)return;b.style.fontWeight=k===f?'700':'500';b.style.borderColor=k===f?'var(--vt3)':'var(--bd)';});
   renderObs();
 }
 function swQR(m){
   S.qrMode=m;
-  ['all','parent','peer'].forEach(k=>{
-    const b=document.getElementById('qt-'+k);if(!b)return;
-    b.style.background=k===m?'var(--vt)':'var(--wh)';
-    b.style.color=k===m?'var(--vt3)':'var(--tx2)';
-    b.style.borderColor=k===m?'var(--vt3)':'var(--bd)';
-  });
+  ['all','parent','peer'].forEach(k=>{const b=document.getElementById('qt-'+k);if(!b)return;b.style.background=k===m?'var(--vt)':'var(--wh)';b.style.color=k===m?'var(--vt3)':'var(--tx2)';b.style.borderColor=k===m?'var(--vt3)':'var(--bd)';});
   makeQR();
 }
-function packLessons(){
-  try{
-    const slim={
-      i:{t:DB.info.title||'',s:DB.info.school||'',d:DB.info.date||'',p:DB.info.place||'',m:DB.info.msg||''},
-      l:DB.lessons.map(l=>({id:l.id,t:l.teacher,g:l.grade,c:l.cls,s:l.subject,u:l.unit,tm:l.time||'',r:l.room||'',dr:l.driveUrl||''}))
-    };
-    return btoa(unescape(encodeURIComponent(JSON.stringify(slim))));
-  }catch(e){return '';}
-}
-function unpackLessons(packed){
-  try{
-    const slim=JSON.parse(decodeURIComponent(escape(atob(packed))));
-    if(slim.i){
-      DB.info.title=slim.i.t||DB.info.title;
-      DB.info.school=slim.i.s||DB.info.school;
-      DB.info.date=slim.i.d||DB.info.date;
-      DB.info.place=slim.i.p||DB.info.place;
-      DB.info.msg=slim.i.m||DB.info.msg;
-    }
-    if(slim.l&&slim.l.length>0){
-      DB.lessons=slim.l.map(l=>({
-        id:l.id,teacher:l.t,grade:l.g,cls:l.c,
-        subject:l.s,unit:l.u,time:l.tm||'',
-        room:l.r||'',driveUrl:l.dr||''
-      }));
-    }
-  }catch(e){}
-}
 function makeQR(){
-  // QR에 지도안 데이터를 압축해서 담기
-  const base=APP_URL;
-  const params=new URLSearchParams();
-  if(S.qrMode!=='all') params.set('type',S.qrMode);
-  if(DB.lessons.length>0){
-    const packed=packLessons();
-    if(packed) params.set('d',packed);
-  }
-  const fullUrl=base+(params.toString()?'?'+params.toString():'');
-  // 2000자 초과시 지도안 제외
-  const url=fullUrl.length<=2000?fullUrl:base+(S.qrMode!=='all'?'?type='+S.qrMode:'');
+  // QR에는 앱 주소만 담음 (깔끔!)
+  const url=S.qrMode==='parent'?PARENT_URL:S.qrMode==='peer'?PEER_URL:APP_URL;
   const box=document.getElementById('qr-box');box.innerHTML='';
-  QRCode.toCanvas(document.createElement('canvas'),url,{width:180,margin:1,errorCorrectionLevel:'M',color:{dark:'#200C3C',light:'#fff'}},(err,canvas)=>{
+  QRCode.toCanvas(document.createElement('canvas'),url,{width:190,margin:2,errorCorrectionLevel:'M',color:{dark:'#200C3C',light:'#fff'}},(err,canvas)=>{
     if(err){box.textContent='QR 실패';return;}
     box.appendChild(canvas);
     document.getElementById('qr-url').textContent=url.length>55?url.slice(0,55)+'...':url;
   });
 }
 function shareURL(){
-  const base=APP_URL;
-  const params=new URLSearchParams();
-  if(S.qrMode!=='all') params.set('type',S.qrMode);
-  if(DB.lessons.length>0){const packed=packLessons();if(packed)params.set('d',packed);}
-  const url=base+(params.toString()?'?'+params.toString():'');
+  const url=S.qrMode==='parent'?PARENT_URL:S.qrMode==='peer'?PEER_URL:APP_URL;
   if(navigator.share)navigator.share({title:'수업 참관록',url});
   else navigator.clipboard.writeText(url).then(()=>toast('📋 링크 복사됨'));
 }
@@ -856,17 +764,11 @@ function cm(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.ov').forEach(el=>{el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});});
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 
-// ══ 시작 ══
+// ── 시작 ──
 lsLoad();
-// URL에서 지도안 데이터 읽기 (QR 스캔시 자동 적용)
-const _urlP=new URLSearchParams(location.search);
-const _packed=_urlP.get('d');
-if(_packed) unpackLessons(_packed);
-// URL 타입 파라미터로 참관록 직접 이동
-const _type=_urlP.get('type');
-renderAll();makeQR();
-if(_type==='parent'){ window.location.href=PARENT_URL; }
-else if(_type==='peer'){ window.location.href=PEER_URL; }
+renderAll();
+loadLessons(); // Sheets에서 지도안 자동 로드
+makeQR();
 const _ld=document.getElementById('ldg');
 _ld.classList.add('hide');
 setTimeout(()=>_ld.style.display='none',400);
