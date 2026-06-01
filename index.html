@@ -448,22 +448,36 @@ async function loadSheets(){
     // 7=좋았던점 8=내수업에활용 9=종합의견 10=소속 11=직위 12=성명
     const tRows=csvParse(dec.decode(bufT));
     const tObs=tRows.map((r,i)=>{
-      // 헤더명으로 읽기 (컬럼 순서 변경에 강함)
+      // 헤더 키 디버깅
+      const keys = Object.keys(r);
+      // 이름 찾기 - 마지막 컬럼이 성명
+      const nameKey = keys.find(k=>k.trim()==='성명')||keys[keys.length-1];
+      const orgKey  = keys.find(k=>k.trim()==='소속')||'';
+      const posKey  = keys.find(k=>k.trim()==='직위')||'';
+      const goodKey = keys.find(k=>k.includes('좋았던'))||'';
+      const applyKey= keys.find(k=>k.includes('활용'))||'';
+      const opinKey = keys.find(k=>k.includes('종합'))||'';
+      const dateKey = keys.find(k=>k.includes('참관')&&!k.includes('소감'))||'';
+      const periodKey=keys.find(k=>k.trim()==='교시')||'';
+      const subKey  = keys.find(k=>k.trim()==='과목명')||'';
+      const unitKey = keys.find(k=>k.trim()==='단원명')||'';
+      const teachKey= keys.find(k=>k.includes('수업 교사')||k.includes('수업교사'))||'';
+      const classKey= keys.find(k=>k.includes('대상'))||'';
       return{
         id:'t'+i, obsType:'peer',
         at:      r['Timestamp']||'',
-        subject: r['과목명']||'',
-        unit:    r['단원명']||'',
-        teacher: r['수업 교사']||r['수업교사']||'',
-        class_:  r['대상(반)']||'',
-        date:    r['참관 일']||r['참관일']||r['참관일시']||'',
-        period:  r['교시']||'',
-        good:    r['좋았던 점']||r['좋았던점']||'',
-        apply:   r['내 수업에 활용하고 싶은 점']||r['내수업에활용']||r['활용하고싶은점']||'',
-        opinion: r['종합 의견']||r['종합의견']||'',
-        org:     r['소속']||'',
-        pos:     r['직위']||'',
-        name:    r['성명']||''
+        subject: r[subKey]||'',
+        unit:    r[unitKey]||'',
+        teacher: r[teachKey]||'',
+        class_:  r[classKey]||'',
+        date:    r[dateKey]||'',
+        period:  r[periodKey]||'',
+        good:    r[goodKey]||'',
+        apply:   r[applyKey]||'',
+        opinion: r[opinKey]||'',
+        org:     r[orgKey]||'',
+        pos:     r[posKey]||'',
+        name:    r[nameKey]||''
       };
     });
 
